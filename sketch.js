@@ -107,7 +107,7 @@ function draw() {
 
           fill(col);
           noStroke();
-          circle(x, y, 12);
+          circle(x, y, 6);
         }
       }
     }
@@ -123,17 +123,20 @@ function windowResized() {
 function drawFlame(x, y) {
   push();
   noStroke();
-  for (let i = 0; i < 6; i++) {
-    // 紫色調顏色變化
-    let r = random(100, 200);
+  // 增加粒子數量，讓火焰更飽滿
+  for (let i = 0; i < 12; i++) {
+    // 強化紫色與霓虹感的色彩變化
+    let r = random(150, 255);
+    let g = random(0, 100);
     let b = 255;
-    fill(r, 0, b, 150 - i * 20);
+    fill(r, g, b, 200 - i * 15);
     
-    let offsetX = random(-8, 8);
-    let offsetY = -i * 12 - (frameCount % 15);
-    let size = 25 - i * 4;
+    // 增加水平擺動與垂直上升速度
+    let offsetX = random(-12, 12) + sin(frameCount * 0.2 + i) * 10;
+    let offsetY = -i * 15 - (frameCount * 3 % 20);
+    let size = random(20, 35) - i * 2.5;
     
-    ellipse(x + offsetX, y + offsetY, size, size * 1.5);
+    if (size > 0) ellipse(x + offsetX, y + offsetY, size, size * 2);
   }
   pop();
 }
