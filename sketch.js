@@ -101,8 +101,8 @@ function draw() {
           // 針對 4, 8, 12, 16, 20 產生水泡與紫色火焰
           let tips = [4, 8, 12, 16, 20];
           if (tips.includes(i)) {
-            drawFlame(x, y);
-            drawBubble(x, y);
+            drawFlame(x, y, hand.handedness);
+            drawBubble(x, y, hand.handedness);
           }
 
           fill(col);
@@ -120,15 +120,23 @@ function windowResized() {
 }
 
 // 繪製紫色火焰特效
-function drawFlame(x, y) {
+function drawFlame(x, y, handedness) {
   push();
   noStroke();
   // 增加粒子數量，讓火焰更飽滿
   for (let i = 0; i < 12; i++) {
-    // 強化紫色與霓虹感的色彩變化
-    let r = random(150, 255);
-    let g = random(0, 100);
-    let b = 255;
+    let r, g, b;
+    if (handedness === "Right") {
+      // 右手：粉色火焰 (高紅、高藍、中綠)
+      r = 255;
+      g = random(100, 180);
+      b = random(180, 220);
+    } else {
+      // 左手：藍色火焰 (低紅、高綠、高藍)
+      r = random(0, 100);
+      g = random(150, 255);
+      b = 255;
+    }
     fill(r, g, b, 200 - i * 15);
     
     // 增加水平擺動與垂直上升速度
@@ -142,10 +150,15 @@ function drawFlame(x, y) {
 }
 
 // 繪製水泡特效
-function drawBubble(x, y) {
+function drawBubble(x, y, handedness) {
   push();
-  // 半透明水藍色
-  fill(200, 235, 255, 120);
+  if (handedness === "Right") {
+    // 右手：半透明粉色
+    fill(255, 182, 193, 120);
+  } else {
+    // 左手：半透明藍色
+    fill(173, 216, 230, 120);
+  }
   stroke(255, 200);
   strokeWeight(2);
   circle(x, y, 35);
